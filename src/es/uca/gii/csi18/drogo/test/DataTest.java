@@ -42,14 +42,15 @@ class DataTest {
 	        
 	        int i = 0;	        
 	        while (rs.next()) {	        	
-	        	System.out.println(rs.getString("Nombre") + " " + rs.getString("Edad"));
+	        	System.out.println(rs.getString("Nombre") + " " + rs.getString("Edad") + " " 
+	        			+ rs.getString("ID"));
 	        	i++;
 	        }
 	        
 	        iColumns = rs.getMetaData().getColumnCount();
 	        
 	        assertEquals(2, i);
-	        assertEquals(2, iColumns);
+	        assertEquals(3, iColumns);
 	        
 	    }
 	    catch (SQLException ee) { throw ee; }
@@ -83,4 +84,5 @@ class DataTest {
 		assertEquals(1, iTrue);
 		assertEquals(0, iFalse);
 	}
+	
 }
