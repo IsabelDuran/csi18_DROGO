@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import es.uca.gii.csi18.drogo.data.Data;
@@ -15,9 +16,10 @@ class DataTest {
 
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception { Data.LoadDriver(); }
-
+	
+	@Disabled
 	@Test
-	void testDbAccess() throws Exception {
+	void testTableAccess() throws Exception {
 		
 		int iColumns, iElements;
 		
