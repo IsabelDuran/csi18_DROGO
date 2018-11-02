@@ -5,8 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-
-
 /**
  * @author isa
  *
@@ -29,8 +27,8 @@ public class Prisionero {
 	    try {
 	    	con = Data.Connection();
 	    	rs = con.createStatement().executeQuery("SELECT Nombre, Edad "
-	    											+ "FROM Prisionero"
-	    											+ "WHERE ID = " + _sID);
+	    											+ "FROM Prisionero "
+	    											+ "WHERE ID = " + Data.String2Sql(sID, true, false));
 	    	rs.next();
 	    	_sNombre = rs.getString("Nombre");
 	    	_iEdad = rs.getInt("Edad");
@@ -80,8 +78,8 @@ public class Prisionero {
 			con = Data.Connection();
 			st = con.createStatement();
 			st.executeUpdate("INSERT INTO Prisionero (Nombre, Edad, ID)"
-							+ "VALUES (" + Data.String2Sql(sNombre, false, false) 
-							+ "," + iEdad + "," + Data.String2Sql(sID, false, false) + ")");
+							+ "VALUES (" + Data.String2Sql(sNombre, true, false) 
+							+ "," + iEdad + "," + Data.String2Sql(sID, true, false) + ")");
 		}
 		catch(SQLException ee) { throw ee; }
 		return new Prisionero(sID);
