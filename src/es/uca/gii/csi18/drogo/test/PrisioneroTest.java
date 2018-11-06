@@ -82,5 +82,20 @@ public class PrisioneroTest {
 				con.close();
 		}
 	}
+	
+	@Test
+	public void testSelect() {
+		
+	}
+	
+	@Test
+	public void testUpdate() {
+		//TODO
+	}
+	
+	@Test
+	public void testDelete() {
+		//TODO
+	}
 
 }

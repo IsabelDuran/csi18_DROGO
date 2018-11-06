@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 23-10-2018 a las 17:10:26
+-- Tiempo de generación: 06-11-2018 a las 16:42:56
 -- Versión del servidor: 10.1.31-MariaDB
 -- Versión de PHP: 7.2.4
 
@@ -30,16 +30,28 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `Prisionero` (
   `Nombre` varchar(30) NOT NULL,
-  `Edad` int(11) NOT NULL
+  `Edad` int(11) NOT NULL,
+  `ID` char(9) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `Prisionero`
 --
 
-INSERT INTO `Prisionero` (`Nombre`, `Edad`) VALUES
-('Claudia', 21),
-('Isabel', 21);
+INSERT INTO `Prisionero` (`Nombre`, `Edad`, `ID`) VALUES
+('Claudia', 21, '12345678A'),
+('Isabel', 21, '12345678B'),
+('Pedro', 24, '12345678J');
+
+--
+-- Índices para tablas volcadas
+--
+
+--
+-- Indices de la tabla `Prisionero`
+--
+ALTER TABLE `Prisionero`
+  ADD PRIMARY KEY (`ID`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

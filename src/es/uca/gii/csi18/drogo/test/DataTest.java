@@ -14,9 +14,15 @@ import es.uca.gii.csi18.drogo.data.Data;
 
 class DataTest {
 
+	/**
+	 * @throws Exception
+	 */
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception { Data.LoadDriver(); }
 	
+	/**
+	 * @throws Exception
+	 */
 	@Disabled
 	@Test
 	void testTableAccess() throws Exception {
@@ -39,7 +45,6 @@ class DataTest {
 	    catch(SQLException ee) { throw ee; }
 	    
 	    try {  	
-	        con = Data.Connection();
 	        rs = con.createStatement().executeQuery("SELECT * FROM Prisionero;");
 	        
 	        int i = 0;	        
@@ -62,6 +67,9 @@ class DataTest {
 	    }
 	}
 	
+	/**
+	 * 
+	 */
 	@Test
 	void String2SqlTest() {
 		assertEquals("hola", Data.String2Sql("hola", false, false));
@@ -76,15 +84,13 @@ class DataTest {
 		
 	}
 	
+	/**
+	 * 
+	 */
 	@Test
 	void Boolean2SqlTest() {
-		int iTrue, iFalse;
-		
-		iTrue = Data.Boolean2Sql(true);
-		iFalse = Data.Boolean2Sql(false);
-		
-		assertEquals(1, iTrue);
-		assertEquals(0, iFalse);
+		assertEquals(1, Data.Boolean2Sql(true));
+		assertEquals(0, Data.Boolean2Sql(false));
 	}
 	
 }
