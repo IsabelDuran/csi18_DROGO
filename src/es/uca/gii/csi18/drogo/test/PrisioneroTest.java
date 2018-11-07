@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -85,7 +86,59 @@ public class PrisioneroTest {
 	
 	@Test
 	public void testSelect() {
+		ArrayList<Prisionero> aPrisionero = new ArrayList<>();
 		
+		try {
+			aPrisionero = new ArrayList<>(Prisionero.Select("Claudia", null, null));
+			
+			for(Prisionero aPrisioneroIterator : aPrisionero)
+				assertEquals("Claudia", aPrisioneroIterator.getNombre());
+			
+			aPrisionero = new ArrayList<>(Prisionero.Select(null, "12345678A", null));
+			
+			for(Prisionero aPrisioneroIterator : aPrisionero)
+				assertEquals("12345678A", aPrisioneroIterator.getID());
+
+			aPrisionero = new ArrayList<>(Prisionero.Select(null, null, 21));
+			
+			for(Prisionero aPrisioneroIterator : aPrisionero)
+				assertEquals(21, aPrisioneroIterator.getEdad());
+			
+			aPrisionero = new ArrayList<>(Prisionero.Select("Isabel", "12345678B", null));
+				
+			for(Prisionero aPrisioneroIterator : aPrisionero) {
+				assertEquals("Isabel", aPrisioneroIterator.getNombre());
+				assertEquals("12345678B", aPrisioneroIterator.getID());
+			}
+			
+			aPrisionero = new ArrayList<>(Prisionero.Select("Isabel", null, 21));
+			
+			for(Prisionero aPrisioneroIterator : aPrisionero) {
+				assertEquals("Isabel", aPrisioneroIterator.getNombre());
+				assertEquals(21, aPrisioneroIterator.getEdad());
+			}
+
+			aPrisionero = new ArrayList<>(Prisionero.Select(null, "12345678B", 21));
+			
+			for(Prisionero aPrisioneroIterator : aPrisionero) {
+				assertEquals("12345678B", aPrisioneroIterator.getID());
+				assertEquals(21, aPrisioneroIterator.getEdad());
+			}
+			
+			aPrisionero = new ArrayList<>(Prisionero.Select("Claudia", "12345678A", 21));
+		
+			for(Prisionero aPrisioneroIterator : aPrisionero) {
+				assertEquals("Claudia", aPrisioneroIterator.getNombre());
+				assertEquals("12345678A", aPrisioneroIterator.getID());
+				assertEquals(21, aPrisioneroIterator.getEdad());
+			}
+			
+			aPrisionero = new ArrayList<>(Prisionero.Select(null, null, null));
+			
+			assertEquals(0, aPrisionero.size());		
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@Test
