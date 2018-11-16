@@ -15,12 +15,14 @@ public class Prisionero {
 	private String _sNombre;
 	private String _sID;
 	private boolean _bIsDeleted;
+	private String _sOldID;
 
 	/**
 	 * @param sID
 	 */
 	public Prisionero(String sID) throws Exception {
 		_sID = sID;
+		_sOldID = sID;
 		_bIsDeleted = false;
 
 		Connection con = null;
@@ -143,10 +145,12 @@ public class Prisionero {
 			con = Data.Connection();
 			st = con.createStatement();
 
-			if (!_bIsDeleted)
+			if (!_bIsDeleted) {
 				st.executeUpdate("UPDATE Prisionero SET Nombre = " + Data.String2Sql(_sNombre, true, false)
-						+ " , Edad = " + _iEdad + " , ID = " + Data.String2Sql(_sID, true, false) + " WHERE ID = "
-						+ Data.String2Sql(_sID, true, false));
+						+ " , Edad = " + _iEdad + " , ID = " + Data.String2Sql(_sID, true, false) + " WHERE ID LIKE "
+						+ Data.String2Sql(_sOldID, true, false));
+				_sOldID = _sID;
+			}
 			else
 				throw new Exception("The prisoner you are trying to update is no longer in prison");
 
