@@ -50,7 +50,7 @@ class DataTest {
 	        int i = 0;	        
 	        while (rs.next()) {	        	
 	        	System.out.println(rs.getString("Nombre") + " " + rs.getString("Edad") + " " 
-	        			+ rs.getString("ID"));
+	        			+ rs.getString("Dni"));
 	        	i++;
 	        }
 	        

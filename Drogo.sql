@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.0
+-- version 4.8.3
 -- https://www.phpmyadmin.net/
 --
--- Servidor: localhost
--- Tiempo de generación: 06-11-2018 a las 16:42:56
--- Versión del servidor: 10.1.31-MariaDB
--- Versión de PHP: 7.2.4
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 17-11-2018 a las 08:22:42
+-- Versión del servidor: 10.1.36-MariaDB
+-- Versión de PHP: 7.2.11
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -19,29 +19,33 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `Drogo`
+-- Base de datos: `drogo`
 --
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `Prisionero`
+-- Estructura de tabla para la tabla `prisionero`
 --
 
 CREATE TABLE `Prisionero` (
+  `Id` int(11) NOT NULL,
   `Nombre` varchar(30) NOT NULL,
   `Edad` int(11) NOT NULL,
-  `ID` char(9) NOT NULL
+  `Dni` varchar(9) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Volcado de datos para la tabla `Prisionero`
+-- Volcado de datos para la tabla `prisionero`
 --
 
-INSERT INTO `Prisionero` (`Nombre`, `Edad`, `ID`) VALUES
-('Claudia', 21, '12345678A'),
-('Isabel', 21, '12345678B'),
-('Pedro', 24, '12345678J');
+INSERT INTO `Prisionero` (`Id`, `Nombre`, `Edad`, `Dni`) VALUES
+(2, 'Isabel', 21, '12345678B'),
+(11, 'Pedro', 24, '12345678J'),
+(14, 'Claudia', 21, '45339131J'),
+(17, 'Carlos', 23, '12345678G'),
+(39, 'Laura', 24, '12345670I'),
+(41, 'Lola Flores', 24, '12345678W');
 
 --
 -- Índices para tablas volcadas
@@ -51,7 +55,18 @@ INSERT INTO `Prisionero` (`Nombre`, `Edad`, `ID`) VALUES
 -- Indices de la tabla `Prisionero`
 --
 ALTER TABLE `Prisionero`
-  ADD PRIMARY KEY (`ID`);
+  ADD PRIMARY KEY (`Id`),
+  ADD UNIQUE KEY `ID` (`Dni`);
+
+--
+-- AUTO_INCREMENT de las tablas volcadas
+--
+
+--
+-- AUTO_INCREMENT de la tabla `prisionero`
+--
+ALTER TABLE `Prisionero`
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

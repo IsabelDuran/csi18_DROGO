@@ -37,8 +37,8 @@ public class PrisioneroTest {
 
 		try {
 			con = Data.Connection();
-			Prisionero prisionero = Prisionero.Create("12345678J", "Pedro", 24);
-			rs = con.createStatement().executeQuery("SELECT Nombre, Edad, ID FROM Prisionero WHERE " + "ID="
+			Prisionero prisionero = Prisionero.Create("12345670I", "Laura", 24);
+			rs = con.createStatement().executeQuery("SELECT Nombre, Edad, Dni FROM Prisionero WHERE " + "Dni="
 					+ Data.String2Sql(prisionero.getID(), true, false));
 			rs.next();
 
@@ -65,7 +65,7 @@ public class PrisioneroTest {
 		ResultSet rs = null;
 		try {
 			con = Data.Connection();
-			rs = con.createStatement().executeQuery("SELECT Nombre, Edad, ID FROM Prisionero");
+			rs = con.createStatement().executeQuery("SELECT Nombre, Edad, Dni FROM Prisionero");
 			while (rs.next()) {
 				Prisionero prisionero = new Prisionero(rs.getString(3));
 
@@ -86,8 +86,10 @@ public class PrisioneroTest {
 	@Test
 	public void testSelect() {
 		ArrayList<Prisionero> aPrisionero = new ArrayList<>();
-
+		Connection con = null;
+		ResultSet rs = null;
 		try {
+			con = Data.Connection();
 			aPrisionero = new ArrayList<>(Prisionero.Select("Claudia", null, null));
 
 			for (Prisionero aPrisioneroIterator : aPrisionero)
@@ -133,8 +135,10 @@ public class PrisioneroTest {
 			}
 
 			aPrisionero = new ArrayList<>(Prisionero.Select(null, null, null));
-
-			assertEquals(3, aPrisionero.size());
+			rs = con.createStatement().executeQuery("SELECT COUNT(*) FROM Prisionero");
+			rs.next();
+			
+			assertEquals(rs.getInt(1), aPrisionero.size());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -147,19 +151,18 @@ public class PrisioneroTest {
 		try {
 			con = Data.Connection();
 			try {
-				Prisionero prisionero = Prisionero.Create("12345678G", "Carlos", 23);
+				Prisionero prisionero = Prisionero.Create("45667823S", "Clara", 23);
 				prisionero.setEdad(24);
 				prisionero.setNombre("Lola Flores");
 				prisionero.setID("12345678W");
 				prisionero.Update();
 
-				rs = con.createStatement()
-						.executeQuery("SELECT Nombre, Edad, ID FROM Prisionero WHERE ID = '12345678W'");
+				rs = con.createStatement().executeQuery("SELECT Nombre, Edad, Dni FROM Prisionero WHERE Dni = '12345678W'");
 				rs.next();
 
 				assertEquals(24, rs.getInt("Edad"));
 				assertEquals("Lola Flores", rs.getString("Nombre"));
-				assertEquals("12345678W", rs.getString("ID"));
+				assertEquals("12345678W", rs.getString("Dni"));
 
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -167,14 +170,16 @@ public class PrisioneroTest {
 		} catch (SQLException ee) {
 			throw ee;
 		} finally {
-			con.close();
+			if(con != null)
+				con.close();
+			if(rs != null)
 			rs.close();
 		}
 	}
 
 	@Test
 	public void testDelete() throws Exception {
-		Prisionero prisionero = Prisionero.Create("12345678G", "Carlos", 23);
+		Prisionero prisionero = Prisionero.Create("12345679D", "Carlos", 23);
 		prisionero.Delete();
 		assertEquals(true, prisionero.getIsDeleted());
 
