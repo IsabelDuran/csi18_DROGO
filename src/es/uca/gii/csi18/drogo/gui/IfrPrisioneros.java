@@ -4,12 +4,17 @@ import java.awt.EventQueue;
 
 import javax.swing.JInternalFrame;
 import javax.swing.JTextField;
+
+import es.uca.gii.csi18.drogo.data.Prisionero;
+
 import java.awt.BorderLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import java.awt.GridLayout;
 import javax.swing.JButton;
 import javax.swing.JTable;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class IfrPrisioneros extends JInternalFrame {
 	private JTextField txtDni;
@@ -53,6 +58,22 @@ public class IfrPrisioneros extends JInternalFrame {
 		txtEdad.setColumns(10);
 		
 		JButton btnBuscar = new JButton("Buscar");
+		btnBuscar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					if(txtEdad.getText().equals(""))
+						tabResult.setModel(new PrisionerosTableModel(Prisionero.Select(txtNombre.getText(), txtDni.getText(), null)));
+					else
+						tabResult.setModel(new PrisionerosTableModel(Prisionero.Select(txtNombre.getText(), 
+																	 txtDni.getText(),
+																	 Integer.parseInt(txtEdad.getText()))));
+				} catch (NumberFormatException e) {
+					e.printStackTrace();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
 		panel.add(btnBuscar);
 		
 		tabResult = new JTable();

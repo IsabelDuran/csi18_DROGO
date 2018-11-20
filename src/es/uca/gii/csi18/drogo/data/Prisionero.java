@@ -29,13 +29,13 @@ public class Prisionero {
 		try {
 			con = Data.Connection();
 			rs = con.createStatement().executeQuery(
-					"SELECT Dni, Nombre, Edad " + "FROM Prisionero " + "WHERE Id = " + Data.LastId(con));
+					"SELECT Dni, Nombre, Edad " + "FROM Prisionero " + "WHERE Id = " + iId);
 			rs.next();
 			_sNombre = rs.getString("Nombre");
 			_iEdad = rs.getInt("Edad");
 			_sDni =  rs.getString("Dni");
 			
-			_iId = Data.LastId(con);
+			_iId = iId;
 		} catch (SQLException ee) {
 			throw ee;
 		}
@@ -178,8 +178,7 @@ public class Prisionero {
 
 		try {
 			con = Data.Connection();
-			rs = con.createStatement().executeQuery("SELECT Id FROM Prisionero " 
-													+ Where(sNombre, sDni, iEdad));
+			rs = con.createStatement().executeQuery("SELECT Id FROM Prisionero " + Where(sNombre, sDni, iEdad));
 			while (rs.next())
 				aPrisoners.add(new Prisionero(rs.getInt("Id")));
 
@@ -188,6 +187,8 @@ public class Prisionero {
 		} finally {
 			if (con != null)
 				con.close();
+			if(rs != null)
+				rs.close();
 		}
 
 		return aPrisoners;
@@ -203,9 +204,9 @@ public class Prisionero {
 		String sReturn = "";
 
 		if (sNombre != null)
-			sReturn = sReturn + "Nombre LIKE " + Data.String2Sql(sNombre, true, false) + " AND ";
+			sReturn = sReturn + "Nombre LIKE " + Data.String2Sql(sNombre, true, true) + " AND ";
 		if (sDni != null)
-			sReturn = sReturn + "Dni LIKE " + Data.String2Sql(sDni, true, false) + " AND ";
+			sReturn = sReturn + "Dni LIKE " + Data.String2Sql(sDni, true, true) + " AND ";
 		if (iEdad != null)
 			sReturn = sReturn + "Edad = " + iEdad + " AND ";
 

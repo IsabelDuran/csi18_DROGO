@@ -75,14 +75,18 @@ public class Data {
 	 * @param con
 	 * @return
 	 * @throws SQLException 
+	 * @throws IOException 
 	 */
-	public static int LastId(Connection con) throws SQLException {
+	public static int LastId(Connection con) throws SQLException, IOException {
 		try {
-			ResultSet rs = con.createStatement().executeQuery("jdbc.lastIdSentence");
+			Properties properties = Config.Properties(getPropertiesUrl());
+			ResultSet rs = con.createStatement().executeQuery(properties.getProperty("jdbc.lastIdSentence"));
 			
 			rs.next();
 			return rs.getInt(1);
 		} catch (SQLException e) {
+			throw e;
+		} catch (IOException e) {
 			throw e;
 		}
 		

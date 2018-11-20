@@ -73,6 +73,15 @@ public class FrmMain {
 		menuBar.add(mitBuscar);
 		
 		JMenuItem mitBuscarPrisionero = new JMenuItem("Prisionero");
+		mitBuscarPrisionero.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				IfrPrisioneros ifrPrisioneros = new IfrPrisioneros();
+				
+				ifrPrisioneros.setBounds(12, 28, 244, 192);
+				frame.getContentPane().add(ifrPrisioneros, 0);
+				ifrPrisioneros.setVisible(true);
+			}
+		});
 		mitBuscar.add(mitBuscarPrisionero);
 		frame.getContentPane().setLayout(null);
 	}
