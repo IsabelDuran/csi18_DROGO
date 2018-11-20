@@ -39,12 +39,12 @@ public class PrisioneroTest {
 			con = Data.Connection();
 			Prisionero prisionero = Prisionero.Create("12345670I", "Laura", 24);
 			rs = con.createStatement().executeQuery("SELECT Nombre, Edad, Dni FROM Prisionero WHERE " + "Dni="
-					+ Data.String2Sql(prisionero.getID(), true, false));
+					+ Data.String2Sql(prisionero.getDni(), true, false));
 			rs.next();
 
 			assertEquals(rs.getString(1), prisionero.getNombre());
 			assertEquals(rs.getInt(2), prisionero.getEdad());
-			assertEquals(rs.getString(3), prisionero.getID());
+			assertEquals(rs.getString(3), prisionero.getDni());
 
 		} catch (SQLException ee) {
 			throw ee;
@@ -65,13 +65,13 @@ public class PrisioneroTest {
 		ResultSet rs = null;
 		try {
 			con = Data.Connection();
-			rs = con.createStatement().executeQuery("SELECT Nombre, Edad, Dni FROM Prisionero");
+			rs = con.createStatement().executeQuery("SELECT Id, Dni, Nombre, Edad FROM Prisionero");
 			while (rs.next()) {
-				Prisionero prisionero = new Prisionero(rs.getString(3));
+				Prisionero prisionero = new Prisionero(rs.getInt("Id"));
 
 				assertEquals(rs.getString(1), prisionero.getNombre());
 				assertEquals(rs.getInt(2), prisionero.getEdad());
-				assertEquals(rs.getString(3), prisionero.getID());
+				assertEquals(rs.getString(3), prisionero.getDni());
 			}
 		} catch (SQLException ee) {
 			throw ee;
@@ -98,7 +98,7 @@ public class PrisioneroTest {
 			aPrisionero = new ArrayList<>(Prisionero.Select(null, "12345678A", null));
 
 			for (Prisionero aPrisioneroIterator : aPrisionero)
-				assertEquals("12345678A", aPrisioneroIterator.getID());
+				assertEquals("12345678A", aPrisioneroIterator.getDni());
 
 			aPrisionero = new ArrayList<>(Prisionero.Select(null, null, 21));
 
@@ -109,7 +109,7 @@ public class PrisioneroTest {
 
 			for (Prisionero aPrisioneroIterator : aPrisionero) {
 				assertEquals("Isabel", aPrisioneroIterator.getNombre());
-				assertEquals("12345678B", aPrisioneroIterator.getID());
+				assertEquals("12345678B", aPrisioneroIterator.getDni());
 			}
 
 			aPrisionero = new ArrayList<>(Prisionero.Select("Isabel", null, 21));
@@ -122,7 +122,7 @@ public class PrisioneroTest {
 			aPrisionero = new ArrayList<>(Prisionero.Select(null, "12345678B", 21));
 
 			for (Prisionero aPrisioneroIterator : aPrisionero) {
-				assertEquals("12345678B", aPrisioneroIterator.getID());
+				assertEquals("12345678B", aPrisioneroIterator.getDni());
 				assertEquals(21, aPrisioneroIterator.getEdad());
 			}
 
@@ -130,7 +130,7 @@ public class PrisioneroTest {
 
 			for (Prisionero aPrisioneroIterator : aPrisionero) {
 				assertEquals("Claudia", aPrisioneroIterator.getNombre());
-				assertEquals("12345678A", aPrisioneroIterator.getID());
+				assertEquals("12345678A", aPrisioneroIterator.getDni());
 				assertEquals(21, aPrisioneroIterator.getEdad());
 			}
 
@@ -154,7 +154,7 @@ public class PrisioneroTest {
 				Prisionero prisionero = Prisionero.Create("45667823S", "Clara", 23);
 				prisionero.setEdad(24);
 				prisionero.setNombre("Lola Flores");
-				prisionero.setID("12345678W");
+				prisionero.setDni("12345678W");
 				prisionero.Update();
 
 				rs = con.createStatement().executeQuery("SELECT Nombre, Edad, Dni FROM Prisionero WHERE Dni = '12345678W'");

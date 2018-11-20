@@ -3,6 +3,8 @@ package es.uca.gii.csi18.drogo.data;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Properties;
 
 import es.uca.gii.csi18.drogo.util.Config;
@@ -48,7 +50,7 @@ public class Data {
 	 */
 	public static String String2Sql(String s, boolean bAddQuotes, boolean bAddWildCards) {
 		s = s.replace("'", "''");
-		
+
 		if (bAddWildCards)
 			s = '%' + s + '%';
 
@@ -67,5 +69,22 @@ public class Data {
 			return 1;
 		else
 			return 0;
+	}
+
+	/**
+	 * @param con
+	 * @return
+	 * @throws SQLException 
+	 */
+	public static int LastId(Connection con) throws SQLException {
+		try {
+			ResultSet rs = con.createStatement().executeQuery("jdbc.lastIdSentence");
+			
+			rs.next();
+			return rs.getInt(1);
+		} catch (SQLException e) {
+			throw e;
+		}
+		
 	}
 }

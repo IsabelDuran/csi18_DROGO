@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.3
+-- version 4.8.0
 -- https://www.phpmyadmin.net/
 --
--- Servidor: 127.0.0.1
--- Tiempo de generación: 17-11-2018 a las 08:22:42
--- Versión del servidor: 10.1.36-MariaDB
--- Versión de PHP: 7.2.11
+-- Servidor: localhost
+-- Tiempo de generación: 20-11-2018 a las 16:42:31
+-- Versión del servidor: 10.1.31-MariaDB
+-- Versión de PHP: 7.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -19,13 +19,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `drogo`
+-- Base de datos: `Drogo`
 --
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `prisionero`
+-- Estructura de tabla para la tabla `Prisionero`
 --
 
 CREATE TABLE `Prisionero` (
@@ -36,16 +36,16 @@ CREATE TABLE `Prisionero` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Volcado de datos para la tabla `prisionero`
+-- Volcado de datos para la tabla `Prisionero`
 --
 
 INSERT INTO `Prisionero` (`Id`, `Nombre`, `Edad`, `Dni`) VALUES
 (2, 'Isabel', 21, '12345678B'),
-(11, 'Pedro', 24, '12345678J'),
 (14, 'Claudia', 21, '45339131J'),
 (17, 'Carlos', 23, '12345678G'),
-(39, 'Laura', 24, '12345670I'),
-(41, 'Lola Flores', 24, '12345678W');
+(91, 'Laura', 24, '12345670I'),
+(93, 'Lola Flores', 24, '12345678W'),
+(94, 'Lola', 12, '12345678H');
 
 --
 -- Índices para tablas volcadas
@@ -56,17 +56,17 @@ INSERT INTO `Prisionero` (`Id`, `Nombre`, `Edad`, `Dni`) VALUES
 --
 ALTER TABLE `Prisionero`
   ADD PRIMARY KEY (`Id`),
-  ADD UNIQUE KEY `ID` (`Dni`);
+  ADD UNIQUE KEY `DNI` (`Dni`) USING BTREE;
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
 --
 
 --
--- AUTO_INCREMENT de la tabla `prisionero`
+-- AUTO_INCREMENT de la tabla `Prisionero`
 --
 ALTER TABLE `Prisionero`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=95;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

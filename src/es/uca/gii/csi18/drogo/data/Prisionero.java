@@ -15,14 +15,12 @@ public class Prisionero {
 	private String _sNombre;
 	private String _sDni;
 	private boolean _bIsDeleted;
-	private String _sOldID;
+	private int _iId;
 
 	/**
 	 * @param sDni
 	 */
-	public Prisionero(String sDni) throws Exception {
-		_sDni = sDni;
-		_sOldID = sDni;
+	public Prisionero(int iId) throws Exception {
 		_bIsDeleted = false;
 
 		Connection con = null;
@@ -31,10 +29,13 @@ public class Prisionero {
 		try {
 			con = Data.Connection();
 			rs = con.createStatement().executeQuery(
-					"SELECT Nombre, Edad " + "FROM Prisionero " + "WHERE Dni = " + Data.String2Sql(sDni, true, false));
+					"SELECT Dni, Nombre, Edad " + "FROM Prisionero " + "WHERE Id = " + Data.LastId(con));
 			rs.next();
 			_sNombre = rs.getString("Nombre");
 			_iEdad = rs.getInt("Edad");
+			_sDni =  rs.getString("Dni");
+			
+			_iId = Data.LastId(con);
 		} catch (SQLException ee) {
 			throw ee;
 		}
@@ -56,12 +57,12 @@ public class Prisionero {
 		_sNombre = sNombre;
 	}
 
-	public String getID() {
+	public String getDni() {
 		return _sDni;
 	}
 
-	public void setID(String sID) {
-		_sDni = sID;
+	public void setDni(String sDni) {
+		_sDni = sDni;
 	}
 
 	public boolean getIsDeleted() {
@@ -72,18 +73,17 @@ public class Prisionero {
 	 * @return sAux
 	 */
 	public String toString() {
-		String sAux = super.toString() + ":" + _sDni + ":" + _sNombre + ":" + _iEdad;
-		return sAux;
+		return super.toString() + ":" + _sDni + ":" + _sNombre + ":" + _iEdad;
 	}
 
 	/**
-	 * @param sID
+	 * @param sDni
 	 * @param sNombre
 	 * @param iEdad
 	 * @return
 	 * @throws Exception
 	 */
-	public static Prisionero Create(String sID, String sNombre, int iEdad) throws Exception {
+	public static Prisionero Create(String sDni, String sNombre, int iEdad) throws Exception {
 		Connection con = null;
 		Statement st = null;
 
@@ -91,8 +91,10 @@ public class Prisionero {
 			con = Data.Connection();
 			st = con.createStatement();
 			st.executeUpdate(
-					"INSERT INTO Prisionero (Nombre, Edad, Dni)" + "VALUES (" + Data.String2Sql(sNombre, true, false)
-							+ "," + iEdad + "," + Data.String2Sql(sID, true, false) + ")");
+					"INSERT INTO Prisionero (Dni, Nombre, Edad)" + "VALUES (" + Data.String2Sql(sDni, true, false)
+							+ "," + Data.String2Sql(sDni, true, false) + "," + iEdad + ")");
+			
+			return new Prisionero(Data.LastId(con));
 		} catch (SQLException ee) {
 			throw ee;
 		} finally {
@@ -101,7 +103,6 @@ public class Prisionero {
 			if (con != null)
 				con.close();
 		}
-		return new Prisionero(sID);
 	}
 
 	/**
@@ -147,9 +148,8 @@ public class Prisionero {
 
 			if (!_bIsDeleted) {
 				st.executeUpdate("UPDATE Prisionero SET Nombre = " + Data.String2Sql(_sNombre, true, false)
-						+ " , Edad = " + _iEdad + " , Dni = " + Data.String2Sql(_sDni, true, false) + " WHERE Dni LIKE "
-						+ Data.String2Sql(_sOldID, true, false));
-				_sOldID = _sDni;
+						+ " , Edad = " + _iEdad + " , Dni = " + Data.String2Sql(_sDni, true, false) + " WHERE Id = "
+						+ _iId);
 			}
 			else
 				throw new Exception("The prisoner you are trying to update is no longer in prison");
@@ -166,22 +166,22 @@ public class Prisionero {
 
 	/**
 	 * @param sNombre
-	 * @param sID
+	 * @param sDni
 	 * @param iEdad
 	 * @return
 	 * @throws Exception
 	 */
-	public static ArrayList<Prisionero> Select(String sNombre, String sID, Integer iEdad) throws Exception {
+	public static ArrayList<Prisionero> Select(String sNombre, String sDni, Integer iEdad) throws Exception {
 		ArrayList<Prisionero> aPrisoners = new ArrayList<>();
 		Connection con = null;
 		ResultSet rs = null;
 
 		try {
 			con = Data.Connection();
-			rs = con.createStatement().executeQuery("SELECT Dni FROM Prisionero " 
-													+ Where(sNombre, sID, iEdad));
+			rs = con.createStatement().executeQuery("SELECT Id FROM Prisionero " 
+													+ Where(sNombre, sDni, iEdad));
 			while (rs.next())
-				aPrisoners.add(new Prisionero(rs.getString("Dni")));
+				aPrisoners.add(new Prisionero(rs.getInt("Id")));
 
 		} catch (SQLException ee) {
 			throw ee;
@@ -195,23 +195,23 @@ public class Prisionero {
 
 	/**
 	 * @param sNombre
-	 * @param sID
+	 * @param sDni
 	 * @param iEdad
 	 * @return
 	 */
-	private static String Where(String sNombre, String sID, Integer iEdad) {
-		String sReturnValue = "";
+	private static String Where(String sNombre, String sDni, Integer iEdad) {
+		String sReturn = "";
 
 		if (sNombre != null)
-			sReturnValue = sReturnValue + "Nombre LIKE " + Data.String2Sql(sNombre, true, false) + " AND ";
-		if (sID != null)
-			sReturnValue = sReturnValue + "Dni LIKE " + Data.String2Sql(sID, true, false) + " AND ";
+			sReturn = sReturn + "Nombre LIKE " + Data.String2Sql(sNombre, true, false) + " AND ";
+		if (sDni != null)
+			sReturn = sReturn + "Dni LIKE " + Data.String2Sql(sDni, true, false) + " AND ";
 		if (iEdad != null)
-			sReturnValue = sReturnValue + "Edad = " + iEdad + " AND ";
+			sReturn = sReturn + "Edad = " + iEdad + " AND ";
 
-		if (sReturnValue.length() != 0)
-			sReturnValue = "WHERE " + sReturnValue + sReturnValue.substring(0, sReturnValue.length() - 5);
+		if (sReturn.length() != 0)
+			sReturn = "WHERE " + sReturn + sReturn.substring(0, sReturn.length() - 5);
 
-		return sReturnValue;
+		return sReturn;
 	}
 }

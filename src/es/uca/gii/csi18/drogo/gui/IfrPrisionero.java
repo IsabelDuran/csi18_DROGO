@@ -1,17 +1,15 @@
 package es.uca.gii.csi18.drogo.gui;
 
-import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import es.uca.gii.csi18.drogo.data.Prisionero;
-
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class IfrPrisionero extends JInternalFrame {
 	private JTextField txtDni;
@@ -63,7 +61,7 @@ public class IfrPrisionero extends JInternalFrame {
 					if(_prisionero == null) {
 						_prisionero = Prisionero.Create(txtDni.getText(), txtNombre.getText(), Integer.parseInt(txtEdad.getText()));
 					}else {
-						_prisionero.setID(txtDni.getText());
+						_prisionero.setDni(txtDni.getText());
 						_prisionero.setNombre(txtNombre.getText());
 						_prisionero.setEdad(Integer.parseInt(txtEdad.getText()));
 						_prisionero.Update();
