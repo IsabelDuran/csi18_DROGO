@@ -33,10 +33,11 @@ public class FrmMain {
 
 	/**
 	 * Create the application.
-	 * @throws UnsupportedLookAndFeelException 
-	 * @throws IllegalAccessException 
-	 * @throws InstantiationException 
-	 * @throws ClassNotFoundException 
+	 * 
+	 * @throws UnsupportedLookAndFeelException
+	 * @throws IllegalAccessException
+	 * @throws InstantiationException
+	 * @throws ClassNotFoundException
 	 */
 	public FrmMain() throws Exception {
 		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -51,32 +52,32 @@ public class FrmMain {
 		frame.setTitle("Gestion de la carcel");
 		frame.setBounds(200, 200, 800, 700);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
+
 		JMenuBar menuBar = new JMenuBar();
 		frame.setJMenuBar(menuBar);
-		
+
 		JMenu mitNuevo = new JMenu("Nuevo");
 		menuBar.add(mitNuevo);
-		
+
 		JMenuItem mitNuevoPrisionero = new JMenuItem("Prisionero");
 		mitNuevoPrisionero.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				IfrPrisionero ifrPrisionero = new IfrPrisionero();
-				ifrPrisionero.setBounds(0,0,650,500);
+				IfrPrisionero ifrPrisionero = new IfrPrisionero(null);
+				ifrPrisionero.setBounds(0, 0, 650, 500);
 				frame.getContentPane().add(ifrPrisionero);
 				ifrPrisionero.setVisible(true);
 			}
 		});
 		mitNuevo.add(mitNuevoPrisionero);
-		
+
 		JMenu mitBuscar = new JMenu("Buscar");
 		menuBar.add(mitBuscar);
-		
+
 		JMenuItem mitBuscarPrisionero = new JMenuItem("Prisionero");
 		mitBuscarPrisionero.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				IfrPrisioneros ifrPrisioneros = new IfrPrisioneros();
-				
+				IfrPrisioneros ifrPrisioneros = new IfrPrisioneros(frame);
+
 				ifrPrisioneros.setBounds(12, 28, 244, 192);
 				frame.getContentPane().add(ifrPrisioneros, 0);
 				ifrPrisioneros.setVisible(true);

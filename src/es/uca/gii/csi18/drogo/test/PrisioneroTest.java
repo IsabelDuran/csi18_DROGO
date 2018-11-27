@@ -137,7 +137,7 @@ public class PrisioneroTest {
 			aPrisionero = new ArrayList<>(Prisionero.Select(null, null, null));
 			rs = con.createStatement().executeQuery("SELECT COUNT(*) FROM Prisionero");
 			rs.next();
-			
+
 			assertEquals(rs.getInt(1), aPrisionero.size());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -157,7 +157,8 @@ public class PrisioneroTest {
 				prisionero.setDni("12345678W");
 				prisionero.Update();
 
-				rs = con.createStatement().executeQuery("SELECT Nombre, Edad, Dni FROM Prisionero WHERE Dni = '12345678W'");
+				rs = con.createStatement()
+						.executeQuery("SELECT Nombre, Edad, Dni FROM Prisionero WHERE Dni = '12345678W'");
 				rs.next();
 
 				assertEquals(24, rs.getInt("Edad"));
@@ -170,10 +171,10 @@ public class PrisioneroTest {
 		} catch (SQLException ee) {
 			throw ee;
 		} finally {
-			if(con != null)
+			if (con != null)
 				con.close();
-			if(rs != null)
-			rs.close();
+			if (rs != null)
+				rs.close();
 		}
 	}
 

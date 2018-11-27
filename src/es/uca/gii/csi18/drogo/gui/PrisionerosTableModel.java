@@ -22,16 +22,25 @@ public class PrisionerosTableModel extends AbstractTableModel {
 		_aData = new ArrayList<Prisionero>(aData);
 	}
 	
+	/* (non-Javadoc)
+	 * @see javax.swing.table.TableModel#getColumnCount()
+	 */
 	@Override
 	public int getColumnCount() {
 		return 3;
 	}
 
+	/* (non-Javadoc)
+	 * @see javax.swing.table.TableModel#getRowCount()
+	 */
 	@Override
 	public int getRowCount() {
 		return _aData.size();
 	}
 
+	/* (non-Javadoc)
+	 * @see javax.swing.table.TableModel#getValueAt(int, int)
+	 */
 	@Override
 	public Object getValueAt(int iRow, int iCol) {
 		switch(iCol) {
@@ -41,6 +50,14 @@ public class PrisionerosTableModel extends AbstractTableModel {
 		}
 		
 		return null;
+	}
+
+	/**
+	 * @param iRow
+	 * @return
+	 */
+	public Prisionero getData(int iRow) {
+		return _aData.get(iRow);
 	}
 
 }
