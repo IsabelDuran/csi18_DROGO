@@ -9,26 +9,29 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
-import com.sun.java.accessibility.util.java.awt.TextComponentTranslator;
-
+import es.uca.gii.csi18.drogo.data.Casa;
 import es.uca.gii.csi18.drogo.data.Prisionero;
+import javax.swing.JComboBox;
 
 /**
  * @author isa
  *
  */
 public class IfrPrisionero extends JInternalFrame {
-	private JTextField txtDni;
+
+	private Prisionero _prisionero = null;
 	private JTextField txtNombre;
 	private JTextField txtEdad;
-	private Prisionero _prisionero = null;
+	private JTextField txtDni;
+	private JComboBox<Casa> cmbCasa;
 
 	/**
 	 * Create the frame.
 	 * 
 	 * @param prisionero
+	 * 
 	 */
-	public IfrPrisionero(Prisionero prisionero) {
+	public IfrPrisionero(Prisionero prisionero) throws Exception {
 		setResizable(true);
 		setClosable(true);
 		setTitle("Prisionero");
@@ -49,7 +52,6 @@ public class IfrPrisionero extends JInternalFrame {
 			txtNombre = new JTextField();
 			txtEdad = new JTextField();
 		}
-
 		JLabel lblDni = new JLabel("DNI:");
 		lblDni.setBounds(10, 11, 46, 14);
 		getContentPane().add(lblDni);
@@ -74,21 +76,34 @@ public class IfrPrisionero extends JInternalFrame {
 		getContentPane().add(txtEdad);
 		txtEdad.setColumns(10);
 
+
+		JLabel lblCasa = new JLabel("Casa:");
+		lblCasa.setBounds(10, 186, 46, 14);
+		getContentPane().add(lblCasa);
+
+		cmbCasa = new JComboBox<Casa>(); 
+		cmbCasa.setModel(new CasaListModel(Casa.Select()));
+		cmbCasa.setBounds(10, 211, 100, 20);
+		getContentPane().add(cmbCasa);
+
 		JButton butGuardar = new JButton("Guardar");
 		butGuardar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					if (_prisionero == null) {
 						_prisionero = Prisionero.Create(txtDni.getText(), txtNombre.getText(),
-								Integer.parseInt(txtEdad.getText()));
+								Integer.parseInt(txtEdad.getText()), (Casa) cmbCasa.getSelectedItem());
 					} else {
 						_prisionero.setDni(txtDni.getText());
 						_prisionero.setNombre(txtNombre.getText());
 						_prisionero.setEdad(Integer.parseInt(txtEdad.getText()));
+						_prisionero.setCasa((Casa) cmbCasa.getModel().getSelectedItem());
 						_prisionero.Update();
 					}
 				} catch (Exception ee) {
-					JOptionPane.showMessageDialog(null, "No se ha creado el objeto prisionero", "Error",
+//					JOptionPane.showMessageDialog(null, "No se ha creado el objeto prisionero", "Error",
+//							JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, txtEdad.getText() + " " + (Casa) cmbCasa.getSelectedItem(), "Error",
 							JOptionPane.ERROR_MESSAGE);
 				}
 			}
@@ -98,5 +113,4 @@ public class IfrPrisionero extends JInternalFrame {
 		getContentPane().add(butGuardar);
 
 	}
-
 }

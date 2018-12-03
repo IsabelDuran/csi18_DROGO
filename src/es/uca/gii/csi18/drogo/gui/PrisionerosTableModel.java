@@ -14,15 +14,17 @@ import es.uca.gii.csi18.drogo.data.Prisionero;
  */
 public class PrisionerosTableModel extends AbstractTableModel {
 	private ArrayList<Prisionero> _aData;
-	
+
 	/**
 	 * @param aData
 	 */
 	public PrisionerosTableModel(ArrayList<Prisionero> aData) {
 		_aData = new ArrayList<Prisionero>(aData);
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see javax.swing.table.TableModel#getColumnCount()
 	 */
 	@Override
@@ -30,7 +32,9 @@ public class PrisionerosTableModel extends AbstractTableModel {
 		return 3;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see javax.swing.table.TableModel#getRowCount()
 	 */
 	@Override
@@ -38,17 +42,22 @@ public class PrisionerosTableModel extends AbstractTableModel {
 		return _aData.size();
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see javax.swing.table.TableModel#getValueAt(int, int)
 	 */
 	@Override
 	public Object getValueAt(int iRow, int iCol) {
-		switch(iCol) {
-		case 0: return _aData.get(iRow).getDni();
-		case 1: return _aData.get(iRow).getNombre();
-		case 2: return _aData.get(iRow).getEdad();
+		switch (iCol) {
+		case 0:
+			return _aData.get(iRow).getDni();
+		case 1:
+			return _aData.get(iRow).getNombre();
+		case 2:
+			return _aData.get(iRow).getEdad();
 		}
-		
+
 		return null;
 	}
 

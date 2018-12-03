@@ -62,10 +62,16 @@ public class FrmMain {
 		JMenuItem mitNuevoPrisionero = new JMenuItem("Prisionero");
 		mitNuevoPrisionero.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				IfrPrisionero ifrPrisionero = new IfrPrisionero(null);
-				ifrPrisionero.setBounds(0, 0, 650, 500);
-				frame.getContentPane().add(ifrPrisionero);
-				ifrPrisionero.setVisible(true);
+				IfrPrisionero ifrPrisionero;
+				try {
+					ifrPrisionero = new IfrPrisionero(null);
+					ifrPrisionero.setBounds(0, 0, 650, 500);
+					frame.getContentPane().add(ifrPrisionero);
+					ifrPrisionero.setVisible(true);
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 		mitNuevo.add(mitNuevoPrisionero);
@@ -76,11 +82,15 @@ public class FrmMain {
 		JMenuItem mitBuscarPrisionero = new JMenuItem("Prisionero");
 		mitBuscarPrisionero.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				IfrPrisioneros ifrPrisioneros = new IfrPrisioneros(frame);
-
-				ifrPrisioneros.setBounds(12, 28, 244, 192);
-				frame.getContentPane().add(ifrPrisioneros, 0);
-				ifrPrisioneros.setVisible(true);
+				IfrPrisioneros ifrPrisioneros;
+				try {
+					ifrPrisioneros = new IfrPrisioneros(frame);
+					ifrPrisioneros.setBounds(12, 28, 244, 192);
+					frame.getContentPane().add(ifrPrisioneros, 0);
+					ifrPrisioneros.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		});
 		mitBuscar.add(mitBuscarPrisionero);
