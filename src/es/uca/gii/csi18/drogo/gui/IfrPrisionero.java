@@ -101,9 +101,7 @@ public class IfrPrisionero extends JInternalFrame {
 						_prisionero.Update();
 					}
 				} catch (Exception ee) {
-//					JOptionPane.showMessageDialog(null, "No se ha creado el objeto prisionero", "Error",
-//							JOptionPane.ERROR_MESSAGE);
-					JOptionPane.showMessageDialog(null, txtEdad.getText() + " " + (Casa) cmbCasa.getSelectedItem(), "Error",
+					JOptionPane.showMessageDialog(null, "No se ha creado el objeto prisionero", "Error",
 							JOptionPane.ERROR_MESSAGE);
 				}
 			}

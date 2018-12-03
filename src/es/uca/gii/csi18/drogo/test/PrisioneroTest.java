@@ -32,6 +32,7 @@ public class PrisioneroTest {
 	/**
 	 * @throws Exception
 	 */
+	@Disabled
 	@Test
 	public void testCreate() throws Exception {
 		Connection con = null;
@@ -67,13 +68,15 @@ public class PrisioneroTest {
 		ResultSet rs = null;
 		try {
 			con = Data.Connection();
-			rs = con.createStatement().executeQuery("SELECT Id, Dni, Nombre, Edad FROM Prisionero");
+			rs = con.createStatement().executeQuery("SELECT Id, Id_Casa, Dni, Nombre, Edad FROM Prisionero");
 			while (rs.next()) {
 				Prisionero prisionero = new Prisionero(rs.getInt("Id"));
 
-				assertEquals(rs.getString(1), prisionero.getNombre());
-				assertEquals(rs.getInt(2), prisionero.getEdad());
-				assertEquals(rs.getString(3), prisionero.getDni());
+				assertEquals(rs.getInt("Id"), prisionero.getId());
+				assertEquals(rs.getInt("Id_Casa"), prisionero.getCasa().getId());
+				assertEquals(rs.getString("Nombre"), prisionero.getNombre());
+				assertEquals(rs.getInt("Edad"), prisionero.getEdad());
+				assertEquals(rs.getString("Dni"), prisionero.getDni());
 			}
 		} catch (SQLException ee) {
 			throw ee;
@@ -85,7 +88,6 @@ public class PrisioneroTest {
 		}
 	}
 
-	@Disabled
 	@Test
 	public void testSelect() {
 		ArrayList<Prisionero> aPrisionero = new ArrayList<>();
@@ -108,11 +110,11 @@ public class PrisioneroTest {
 			for (Prisionero aPrisioneroIterator : aPrisionero)
 				assertEquals(21, aPrisioneroIterator.getEdad());
 
-			aPrisionero = new ArrayList<>(Prisionero.Select(null, "Isabel", "12345678B", null));
+			aPrisionero = new ArrayList<>(Prisionero.Select(null, "Isabel", "12345678A", null));
 
 			for (Prisionero aPrisioneroIterator : aPrisionero) {
 				assertEquals("Isabel", aPrisioneroIterator.getNombre());
-				assertEquals("12345678B", aPrisioneroIterator.getDni());
+				assertEquals("12345678A", aPrisioneroIterator.getDni());
 			}
 
 			aPrisionero = new ArrayList<>(Prisionero.Select(null, "Isabel", null, 21));
@@ -122,21 +124,74 @@ public class PrisioneroTest {
 				assertEquals(21, aPrisioneroIterator.getEdad());
 			}
 
-			aPrisionero = new ArrayList<>(Prisionero.Select(null, null, "12345678B", 21));
+			aPrisionero = new ArrayList<>(Prisionero.Select(null, null, "12345678A", 21));
 
 			for (Prisionero aPrisioneroIterator : aPrisionero) {
-				assertEquals("12345678B", aPrisioneroIterator.getDni());
-				assertEquals(21, aPrisioneroIterator.getEdad());
-			}
-
-			aPrisionero = new ArrayList<>(Prisionero.Select(null, "Claudia", "12345678A", 21));
-
-			for (Prisionero aPrisioneroIterator : aPrisionero) {
-				assertEquals("Claudia", aPrisioneroIterator.getNombre());
 				assertEquals("12345678A", aPrisioneroIterator.getDni());
 				assertEquals(21, aPrisioneroIterator.getEdad());
 			}
 
+			aPrisionero = new ArrayList<>(Prisionero.Select(null, "Isabel", "12345678A", 21));
+
+			for (Prisionero aPrisioneroIterator : aPrisionero) {
+				assertEquals("Isabel", aPrisioneroIterator.getNombre());
+				assertEquals("12345678A", aPrisioneroIterator.getDni());
+				assertEquals(21, aPrisioneroIterator.getEdad());
+			}
+			
+			aPrisionero = new ArrayList<>(Prisionero.Select("Martell", null, null, null));
+			for (Prisionero aPrisioneroIterator : aPrisionero) {
+				assertEquals("Martell", aPrisioneroIterator.getCasa().getNombre());
+			}
+			
+			aPrisionero = new ArrayList<>(Prisionero.Select("Martell", "Isabel", null, null));
+			for (Prisionero aPrisioneroIterator : aPrisionero) {
+				assertEquals("12345678A", aPrisioneroIterator.getDni());
+				assertEquals("Martell", aPrisioneroIterator.getCasa().getNombre());
+			}
+			
+			aPrisionero = new ArrayList<>(Prisionero.Select("Martell",null, null, 21));
+			for (Prisionero aPrisioneroIterator : aPrisionero) {
+				assertEquals(21, aPrisioneroIterator.getEdad());
+				assertEquals("Martell", aPrisioneroIterator.getCasa().getNombre());
+			}
+			
+			aPrisionero = new ArrayList<>(Prisionero.Select("Martell",null, "12345678A", 21));
+			for (Prisionero aPrisioneroIterator : aPrisionero) {
+				assertEquals("12345678A", aPrisioneroIterator.getDni());
+				assertEquals(21, aPrisioneroIterator.getEdad());
+				assertEquals("Martell", aPrisioneroIterator.getCasa().getNombre());
+			}
+			
+			aPrisionero = new ArrayList<>(Prisionero.Select("Martell", "Isabel", null, 21));
+			for (Prisionero aPrisioneroIterator : aPrisionero) {
+				assertEquals("Isabel", aPrisioneroIterator.getNombre());
+				assertEquals(21, aPrisioneroIterator.getEdad());
+				assertEquals("Martell", aPrisioneroIterator.getCasa().getNombre());
+			}
+			
+			aPrisionero = new ArrayList<>(Prisionero.Select("Martell", null, "12345678A", null));
+			for (Prisionero aPrisioneroIterator : aPrisionero) {
+				assertEquals("Isabel", aPrisioneroIterator.getNombre());
+				assertEquals("Martell", aPrisioneroIterator.getCasa().getNombre());
+			}
+			
+			
+			aPrisionero = new ArrayList<>(Prisionero.Select("Martell", "Isabel", "12345678A", null));
+			for (Prisionero aPrisioneroIterator : aPrisionero) {
+				assertEquals("Isabel", aPrisioneroIterator.getNombre());
+				assertEquals("Martell", aPrisioneroIterator.getCasa().getNombre());
+				assertEquals("12345678A", aPrisioneroIterator.getDni());
+			}
+			
+			aPrisionero = new ArrayList<>(Prisionero.Select("Martell", "Isabel", "12345678A", 21));
+			for (Prisionero aPrisioneroIterator : aPrisionero) {
+				assertEquals("Isabel", aPrisioneroIterator.getNombre());
+				assertEquals("Martell", aPrisioneroIterator.getCasa().getNombre());
+				assertEquals("12345678A", aPrisioneroIterator.getDni());
+				assertEquals(21, aPrisioneroIterator.getEdad());
+			}
+			
 			aPrisionero = new ArrayList<>(Prisionero.Select(null, null, null, null));
 			rs = con.createStatement().executeQuery("SELECT COUNT(*) FROM Prisionero");
 			rs.next();
@@ -147,6 +202,7 @@ public class PrisioneroTest {
 		}
 	}
 
+	@Disabled
 	@Test
 	public void testUpdate() throws Exception {
 		Connection con = null;

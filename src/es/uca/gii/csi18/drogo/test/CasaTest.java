@@ -50,6 +50,9 @@ public class CasaTest {
 		}
 	}
 
+	/**
+	 * @throws Exception
+	 */
 	@Test
 	public void testSelect() throws Exception {
 		ArrayList<Casa> aCasa = Casa.Select();

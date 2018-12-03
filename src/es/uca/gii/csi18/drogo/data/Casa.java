@@ -5,6 +5,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+/**
+ * @author isa
+ *
+ */
 public class Casa {
 	private int _iId;
 	private String _sNombre;
@@ -21,6 +25,10 @@ public class Casa {
 		return _iId;
 	}
 	
+	/**
+	 * @param iId
+	 * @throws Exception
+	 */
 	public Casa (int iId) throws Exception {
 
 		Connection con = null;
@@ -39,6 +47,10 @@ public class Casa {
 		}
 	}
 	
+	/**
+	 * @return
+	 * @throws Exception
+	 */
 	public static ArrayList<Casa> Select() throws Exception {
 		ArrayList<Casa> aCasas = new ArrayList<>();
 		Connection con = null;
@@ -61,6 +73,9 @@ public class Casa {
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	public String toString() {
 		return _sNombre;
 	}

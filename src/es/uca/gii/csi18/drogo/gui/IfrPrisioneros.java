@@ -55,18 +55,21 @@ public class IfrPrisioneros extends JInternalFrame {
 
 		JLabel lblDni = new JLabel("Dni");
 		panel.add(lblDni);
+
 		txtDni = new JTextField();
 		panel.add(txtDni);
 		txtDni.setColumns(10);
 
 		JLabel lblNombre = new JLabel("Nombre");
 		panel.add(lblNombre);
+
 		txtNombre = new JTextField();
 		panel.add(txtNombre);
 		txtNombre.setColumns(10);
 
 		JLabel lblEdad = new JLabel("Edad");
 		panel.add(lblEdad);
+
 		txtEdad = new JTextField();
 		panel.add(txtEdad);
 		txtEdad.setColumns(10);
@@ -77,6 +80,26 @@ public class IfrPrisioneros extends JInternalFrame {
 		cmbCasa.setModel(new CasaListModel(Casa.Select()));
 		cmbCasa.setEditable(true);
 		panel.add(cmbCasa);
+
+		JButton btnBuscar = new JButton("Buscar");
+
+		btnBuscar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					tabResult.setModel(new PrisionerosTableModel(Prisionero.Select(
+							cmbCasa.getModel().getSelectedItem() == null ? null
+									: cmbCasa.getModel().getSelectedItem().toString(),
+							txtNombre.getText().isEmpty() ? null : txtNombre.getText(),
+							txtDni.getText().isEmpty() ? null : txtDni.getText(),
+							txtEdad.getText().isEmpty() ? null : Integer.parseInt(txtEdad.getText()))));
+				} catch (NumberFormatException e1) {
+					e1.printStackTrace();
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+			}
+
+		});
 
 		tabResult = new JTable();
 		tabResult.addMouseListener(new MouseAdapter() {
@@ -99,43 +122,7 @@ public class IfrPrisioneros extends JInternalFrame {
 		});
 
 		getContentPane().add(tabResult, BorderLayout.CENTER);
-
-		JButton btnBuscar = new JButton("Buscar");
 		getContentPane().add(btnBuscar, BorderLayout.SOUTH);
-		btnBuscar.addActionListener(new ActionListener() {
-
-			public void actionPerformed(ActionEvent e) {
-				try {
-					String sDni;
-					if (!txtDni.getText().isEmpty())
-						sDni = txtDni.getText();
-					else
-						sDni = null;
-
-					String sNombre;
-					if (!txtNombre.getText().isEmpty())
-						sNombre = txtNombre.getText();
-					else
-						sNombre = null;
-
-					int iEdad;
-					if (!txtEdad.getText().isEmpty())
-						iEdad = Integer.parseInt(txtEdad.getText());
-					else
-						iEdad = (Integer) null;
-
-					tabResult.setModel((TableModel) new PrisionerosTableModel(Prisionero.Select(
-							cmbCasa.getSelectedItem() == null ? null : cmbCasa.getSelectedItem().toString(), sNombre,
-							sDni, iEdad)));
-
-				} catch (NumberFormatException e1) {
-					e1.printStackTrace();
-				} catch (Exception e1) {
-					e1.printStackTrace();
-				}
-			}
-
-		});
 
 	}
 }

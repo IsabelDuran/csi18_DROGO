@@ -29,20 +29,24 @@ public class Prisionero {
 
 		try {
 			con = Data.Connection();
-			rs = con.createStatement().executeQuery(
-					"SELECT Dni, Nombre, Edad, Id_Casa " + "FROM Prisionero " + "WHERE Id = " + iId);
+			rs = con.createStatement()
+					.executeQuery("SELECT Dni, Nombre, Edad, Id_Casa " + "FROM Prisionero " + "WHERE Id = " + iId);
 			rs.next();
 			_sNombre = rs.getString("Nombre");
 			_iEdad = rs.getInt("Edad");
-			_sDni =  rs.getString("Dni");
+			_sDni = rs.getString("Dni");
 			_casa = new Casa(rs.getInt("Id_Casa"));
-			
+
 			_iId = iId;
 		} catch (SQLException ee) {
 			throw ee;
 		}
 	}
-
+	
+	public int getId() {
+		return _iId;
+	}
+	
 	public int getEdad() {
 		return _iEdad;
 	}
@@ -66,11 +70,11 @@ public class Prisionero {
 	public void setDni(String sDni) {
 		_sDni = sDni;
 	}
-	
+
 	public Casa getCasa() {
 		return _casa;
 	}
-	
+
 	public void setCasa(Casa casa) {
 		_casa = casa;
 	}
@@ -100,10 +104,10 @@ public class Prisionero {
 		try {
 			con = Data.Connection();
 			st = con.createStatement();
-			st.executeUpdate(
-					"INSERT INTO Prisionero (Id_Casa, Dni, Nombre, Edad)" + "VALUES (" + sCasa.getId() +  ", "+ Data.String2Sql(sDni, true, false)
-							+ "," + Data.String2Sql(sNombre, true, false) + "," + iEdad + ")");
-			
+			st.executeUpdate("INSERT INTO Prisionero (Id_Casa, Dni, Nombre, Edad)" + "VALUES (" + sCasa.getId() + ", "
+					+ Data.String2Sql(sDni, true, false) + "," + Data.String2Sql(sNombre, true, false) + "," + iEdad
+					+ ")");
+
 			return new Prisionero(Data.LastId(con));
 		} catch (SQLException ee) {
 			throw ee;
@@ -118,7 +122,8 @@ public class Prisionero {
 	/**
 	 * @throws Exception
 	 */
-	// Precondiciones: El prisionero a eliminar no debe haber sido borrado con anterioridad.
+	// Precondiciones: El prisionero a eliminar no debe haber sido borrado con
+	// anterioridad.
 	// Postcondiciones: Si el prisionero ya estaba borrado, lanza una exepción.
 	// Si no, lo borra y asigna el valor TRUE a _bIsDeleted.
 	public void Delete() throws Exception {
@@ -158,10 +163,9 @@ public class Prisionero {
 
 			if (!_bIsDeleted) {
 				st.executeUpdate("UPDATE Prisionero SET Nombre = " + Data.String2Sql(_sNombre, true, false)
-						+ " , Edad = " + _iEdad + " , Dni = " + Data.String2Sql(_sDni, true, false)
-						+ " , Id_Casa = " + _casa.getId() + " WHERE Id = " + _iId);
-			}
-			else
+						+ " , Edad = " + _iEdad + " , Dni = " + Data.String2Sql(_sDni, true, false) + " , Id_Casa = "
+						+ _casa.getId() + " WHERE Id = " + _iId);
+			} else
 				throw new Exception("The prisoner you are trying to update is no longer in prison");
 
 		} catch (SQLException ee) {
@@ -173,7 +177,7 @@ public class Prisionero {
 				con.close();
 		}
 	}
-	
+
 	/**
 	 * @param sCasa
 	 * @param sNombre
@@ -182,14 +186,16 @@ public class Prisionero {
 	 * @return
 	 * @throws Exception
 	 */
-	public static ArrayList<Prisionero> Select(String sCasa, String sNombre, String sDni, Integer iEdad) throws Exception {
+	public static ArrayList<Prisionero> Select(String sCasa, String sNombre, String sDni, Integer iEdad)
+			throws Exception {
 		ArrayList<Prisionero> aPrisoners = new ArrayList<>();
 		Connection con = null;
 		ResultSet rs = null;
 
 		try {
 			con = Data.Connection();
-			rs = con.createStatement().executeQuery("SELECT Id FROM Prisionero " + Where("sCasa","sNombre", "sDni", iEdad));
+			rs = con.createStatement()
+					.executeQuery("SELECT Prisionero.Id FROM Prisionero " + Where(sCasa, sNombre, sDni, iEdad));
 			while (rs.next())
 				aPrisoners.add(new Prisionero(rs.getInt("Id")));
 
@@ -198,7 +204,7 @@ public class Prisionero {
 		} finally {
 			if (con != null)
 				con.close();
-			if(rs != null)
+			if (rs != null)
 				rs.close();
 		}
 
@@ -206,6 +212,7 @@ public class Prisionero {
 	}
 
 	/**
+	 * @param sCasa
 	 * @param sNombre
 	 * @param sDni
 	 * @param iEdad
@@ -214,19 +221,24 @@ public class Prisionero {
 	private static String Where(String sCasa, String sNombre, String sDni, Integer iEdad) {
 		String sReturn = "";
 
-		if(sCasa != null)
-			sReturn = sReturn + "INNER JOIN Casa ON Casa.Id = Prisionero.Id_Casa WHERE Casa.Nombre LIKE " 
-							  + Data.String2Sql(sCasa, true, true) + " AND "; 
 		if (sNombre != null)
-			sReturn = sReturn + "Nombre LIKE " + Data.String2Sql(sNombre, true, true) + " AND ";
+			sReturn = sReturn + " Prisionero.Nombre LIKE " + Data.String2Sql(sNombre, true, true) + " AND ";
 		if (sDni != null)
-			sReturn = sReturn + "Dni LIKE " + Data.String2Sql(sDni, true, true) + " AND ";
+			sReturn = sReturn + " Prisionero.Dni LIKE " + Data.String2Sql(sDni, true, true) + " AND ";
 		if (iEdad != null)
-			sReturn = sReturn + "Edad = " + iEdad + " AND ";
-
-		if (sReturn.length() != 0)
-			sReturn = "WHERE " + sReturn + sReturn.substring(0, sReturn.length() - 5);
+			sReturn = sReturn + " Prisionero.Edad = " + iEdad + " AND ";
+		if (sCasa != null) {
+			if (sReturn.length() != 0)
+				sReturn = " AND " + sReturn;
+			sReturn = "INNER JOIN Casa ON Casa.Id = Prisionero.Id_Casa WHERE Casa.Nombre LIKE "
+					+ Data.String2Sql(sCasa, true, true) + sReturn;
+		} else 
+			if (iEdad != null || sNombre != null || sDni != null)
+				sReturn = " WHERE " + sReturn;
+		if (sReturn.length() != 0 && (iEdad != null || sNombre != null || sDni != null))
+			sReturn = sReturn.substring(0, sReturn.length() - 5);
 
 		return sReturn;
 	}
+
 }

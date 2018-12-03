@@ -11,12 +11,19 @@ import javax.swing.UnsupportedLookAndFeelException;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+/**
+ * @author isa
+ *
+ */
 public class FrmMain {
 
 	private JFrame frame;
 
 	/**
 	 * Launch the application.
+	 */
+	/**
+	 * @param args
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
